@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIMER</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    
+    <p id="timer">00:00:00</p>
+
+    <div>
+      <button id="start_stop" class="btn btn-lg btn-primary">START</button>
+    </div>
+
+  </div>
+  
+  <script>
+
+    var start;
+    var timer_id;
+
+    var addZero = function(value){
+      if (value < 10){
+        value = '0' + value
+      }
+      return value;
+    }
+
+    var goTimer = function(){
+      var now = new Date();
+
+      var milli = now.getTime() - start.getTime();
+      var seconds = Math.floor(milli / 1000);
+      var minutes = Math.floor(seconds / 60);
+      var hours = addZero(Math.floor(minutes / 60));
+
+      seconds = addZero(seconds - minutes * 60);
+      minutes = addZero(minutes - hours * 60);
+
+      document.getElementById('timer').innerHTML = hours + ':' + minutes + ':' + seconds;
+    }
+
+    document.getElementById('start_stop').addEventListener('click', function(){
+      start = new Date();
+      if (this.innerHTML === 'START'){ 
+          timer_id = setInterval(goTimer, 10);
+
+          this.innerHTML = 'STOP';
+          this.classList.remove('btn-primary');
+          this.classList.add('btn-danger');
+      } else {
+          clearInterval(timer_id);
+
+          this.innerHTML = 'START';
+          this.classList.remove('btn-danger');
+          this.classList.add('btn-primary');
+        }
+    });
+   
+  </script>
+
+</body>
+</html>
